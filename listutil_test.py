@@ -27,7 +27,6 @@ class ListTest(unittest.TestCase):
 
     def test_unique_wrong_value(self):
         """Test impossible case, argument is not a list"""
-        # TODO finish this
         with self.assertRaises(ValueError):
             unique(set())
             unique((2, 5))
