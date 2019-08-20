@@ -65,6 +65,7 @@ Test of multiplication operator (*) method
 | one multiply any fraction | that fraction |
 
 Test of equality operator (==) method
+
 | Test case                              |  Expected Result  |
 |----------------------------------------|-------------------|
 | positive fraction == negative fraction | False             |
