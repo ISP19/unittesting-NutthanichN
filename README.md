@@ -31,7 +31,8 @@ Test of constructor
 | positive numerator | positive numerator and default denominator (= 1) |
 | negative numerator | negative numerator and default denominator (= 1) |
 | numerator is 0 | that numerator and default denominator (= 1) |
-| denominator is 0 | raise ZeroDivisionError |
+| numerator is 1 and denominator is 0 (positive infinity) | positive fraction with that numerator and denominator |
+| numerator is -1 and denominator is 0 (negative infinity) | negative fraction with that numerator and denominator |
 
 Test of string representation method
 
@@ -44,6 +45,8 @@ Test of string representation method
 | positive numerator (and denominator = 1) | the string of integer in form "integer" |
 | positive numerator and denominator is -1 | the string of negative integer in form "-integer" |
 | numerator is 0 and any denominator | the string of zero in form "0" |
+| numerator is 1 and denominator is 0 (positive infinity) | the string of positive fraction in form "numerator/denominator" |
+| numerator is -1 and denominator is 0 (negative infinity) | the string of negative fraction in form "-numerator/denominator" |
 
 Test of addition operator (+) method
 
@@ -52,6 +55,8 @@ Test of addition operator (+) method
 | positive fraction plus positive fraction | positive fraction |
 | negative fraction plus negative fraction | negative fraction |
 | positive fraction plus zero | that positive fraction |
+| any fraction that less than infinity plus positive infinity (1/0) | positive infinity (1/0) |
+| any fraction that less than infinity plus negative infinity (1/0) | negative infinity (1/0) |
 
 Test of multiplication operator (*) method
 

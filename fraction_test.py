@@ -26,6 +26,10 @@ class FractionTest(unittest.TestCase):
         # Constructor should provide default denominator = 1
         f = Fraction(99)
         self.assertEqual("99", f.__str__())
+        f = Fraction(1, 0)
+        self.assertEqual("1/0", f.__str__())
+        f = Fraction(-1, 0)
+        self.assertEqual("-1/0", f.__str__())
 
     def test_add(self):
         """Test of __add__ (+)"""
@@ -36,6 +40,8 @@ class FractionTest(unittest.TestCase):
         self.assertEqual(Fraction(-1, 90), Fraction(23, -45) + Fraction(1, 2))
         self.assertEqual(Fraction(0, 1), Fraction(0) + Fraction(0))
         self.assertEqual(Fraction(7), Fraction(7) + Fraction(0))
+        self.assertEqual(Fraction(1, 0), Fraction(1, 0) + Fraction(5, 2))
+        self.assertEqual(Fraction(-1, 0), Fraction(-1, 0) + Fraction(5, 2))
 
     def test_init(self):
         """Test of __init__"""
@@ -60,12 +66,12 @@ class FractionTest(unittest.TestCase):
         f = Fraction(0)
         self.assertEqual(0, f.numerator)
         self.assertEqual(1, f.denominator)
-        with self.assertRaises(ZeroDivisionError):
-            Fraction(1, 0)
-            Fraction(-1, 0)
-            Fraction(1, -0)
-            Fraction(-1, -0)
-            Fraction(1657198721687, 0)
+        f = Fraction(1, 0)
+        self.assertEqual(1, f.numerator)
+        self.assertEqual(0, f.denominator)
+        f = Fraction(-1, 0)
+        self.assertEqual(-1, f.numerator)
+        self.assertEqual(0, f.denominator)
 
     def test_mul(self):
         """Test of __mul__ (*)"""
@@ -76,6 +82,8 @@ class FractionTest(unittest.TestCase):
         self.assertEqual(Fraction(0), Fraction(0) * Fraction(-1, 2))
         self.assertEqual(Fraction(1, 2), Fraction(1) * Fraction(1, 2))
         self.assertEqual(Fraction(-1, 2), Fraction(1) * Fraction(-1, 2))
+        self.assertEqual(Fraction(1, 0), Fraction(1, 0) * Fraction(5, 7))
+        self.assertEqual(Fraction(-1, 0), Fraction(-1, 0) * Fraction(5, 7))
 
     def test_eq(self):
         """Test of __eq__ (==)"""

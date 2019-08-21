@@ -19,9 +19,6 @@ class Fraction:
         self.numerator = int(numerator / gcd)
         self.denominator = int(denominator / gcd)
 
-        if self.denominator == 0:
-            raise ZeroDivisionError("Denominator can't be zero.")
-
         # put fraction into standard form
         if self.numerator < 0:
             if self.denominator < 0:
@@ -42,12 +39,25 @@ class Fraction:
         """Return the sum of two fractions as a new fraction.
            Use the standard formula  a/b + c/d = (ad+bc)/(b*d)
         """
+        # infinity case: any number + (+/-)infinity = (+/-)infinity
+        # not work with case infinity + (-infinity)
+        if self.denominator == 0:
+            if self.numerator > 0:
+                return Fraction(1, 0)
+            elif self.numerator < 0:
+                return Fraction(-1, 0)
         new_numerator = (self.numerator * frac.denominator) + (self.denominator * frac.numerator)
         new_denominator = self.denominator * frac.denominator
         return Fraction(new_numerator, new_denominator)
 
     def __mul__(self, frac):
         """Return the product of two fractions as a new fraction."""
+        # infinity case: any number * (+/-)infinity = (+/-)infinity
+        if self.denominator == 0:
+            if self.numerator > 0:
+                return Fraction(1, 0)
+            elif self.numerator < 0:
+                return Fraction(-1, 0)
         new_numerator = self.numerator * frac.numerator
         new_denominator = self.denominator * frac.denominator
         return Fraction(new_numerator, new_denominator)
