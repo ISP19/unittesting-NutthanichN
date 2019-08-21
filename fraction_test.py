@@ -33,6 +33,8 @@ class FractionTest(unittest.TestCase):
         self.assertEqual("-1/0", f.__str__())
         f = Fraction(3, 0)
         self.assertEqual("1/0", f.__str__())
+        f = Fraction(-3, 0)
+        self.assertEqual("-1/0", f.__str__())
 
     def test_add(self):
         """Test of __add__ (+)"""
@@ -113,15 +115,15 @@ class FractionTest(unittest.TestCase):
         # infinity cases
         self.assertEqual(Fraction(1, 0), Fraction(1, 0) * Fraction(5, 7))
         self.assertEqual(Fraction(-1, 0), Fraction(-1, 0) * Fraction(5, 7))
+        self.assertEqual(Fraction(1, 0), Fraction(-1, 0) * Fraction(-5, 7))
         self.assertEqual(Fraction(1, 0), Fraction(1, 0) * Fraction(1, 0))
         self.assertEqual(Fraction(1, 0), Fraction(-1, 0) * Fraction(-1, 0))
         self.assertEqual(Fraction(-1, 0), Fraction(-1, 0) * Fraction(1, 0))
-        self.assertEqual(Fraction(-1, 0), Fraction(1, 0).__mul__(Fraction(-1, 0)))
         # indeterminate forms
         with self.assertRaises(ValueError):
             Fraction(0) * Fraction(1, 0)
             Fraction(0) * Fraction(-1, 0)
-        
+
     def test_eq(self):
         """Test of __eq__ (==)"""
         f = Fraction(1, 2)
@@ -145,5 +147,13 @@ class FractionTest(unittest.TestCase):
         self.assertTrue(f.__eq__(g))
         f = Fraction(-3, -4)
         g = Fraction(-3, -4)
+        self.assertTrue(f == g)
+        self.assertTrue(f.__eq__(g))
+        f = Fraction(1, 0)
+        g = Fraction(-1, 0)
+        self.assertFalse(f == g)
+        self.assertFalse(f.__eq__(g))
+        f = Fraction(3, 0)
+        g = Fraction(1, 0)
         self.assertTrue(f == g)
         self.assertTrue(f.__eq__(g))
