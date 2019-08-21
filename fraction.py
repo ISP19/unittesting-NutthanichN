@@ -15,19 +15,25 @@ class Fraction:
         """Initialize a new fraction with the given numerator
            and denominator (default 1).
         """
+        # infinity cases
+        if denominator == 0:
+            if numerator == 0:
+                raise ValueError("Indeterminate form")
+            elif numerator > 0:
+                numerator = 1
+            else:
+                numerator = -1
+        # normal cases, move minus to numerator
+        elif denominator < 0:
+            if numerator > 0:
+                numerator = - numerator
+            else:
+                numerator = abs(numerator)
+            denominator = abs(denominator)
+
         gcd = math.gcd(numerator, denominator)
         self.numerator = int(numerator / gcd)
         self.denominator = int(denominator / gcd)
-
-        # put fraction into standard form
-        if self.numerator < 0:
-            if self.denominator < 0:
-                self.numerator = abs(self.numerator)
-                self.denominator = abs(self.denominator)
-        else:
-            if self.denominator < 0:
-                self.numerator = - self.numerator
-                self.denominator = abs(self.denominator)
 
     def __str__(self):
         """Return fraction as a string."""
@@ -39,25 +45,34 @@ class Fraction:
         """Return the sum of two fractions as a new fraction.
            Use the standard formula  a/b + c/d = (ad+bc)/(b*d)
         """
-        # infinity case: any number + (+/-)infinity = (+/-)infinity
-        # not work with case infinity + (-infinity)
-        if self.denominator == 0:
+        new_numerator = 1
+        new_denominator = 1
+        # infinity plus each other
+        if self.denominator == 0 and frac.denominator == 0:
             if self.numerator > 0:
-                return Fraction(1, 0)
+                if frac.numerator > 0:
+                    new_numerator = 1
+                elif frac.numerator < 0:
+                    raise ValueError("Indeterminate form")
             elif self.numerator < 0:
-                return Fraction(-1, 0)
-        new_numerator = (self.numerator * frac.denominator) + (self.denominator * frac.numerator)
-        new_denominator = self.denominator * frac.denominator
+                if frac.numerator > 0:
+                    raise ValueError("Indeterminate form")
+                elif frac.numerator < 0:
+                    new_numerator = -1
+            new_denominator = 0
+        # normal cases and any number + (+/-) infinity case
+        else:
+            new_numerator = (self.numerator * frac.denominator) + (self.denominator * frac.numerator)
+            new_denominator = self.denominator * frac.denominator
         return Fraction(new_numerator, new_denominator)
 
     def __mul__(self, frac):
         """Return the product of two fractions as a new fraction."""
-        # infinity case: any number * (+/-)infinity = (+/-)infinity
+        # indeterminate form
         if self.denominator == 0:
-            if self.numerator > 0:
-                return Fraction(1, 0)
-            elif self.numerator < 0:
-                return Fraction(-1, 0)
+            if frac.numerator == 0:
+                raise ValueError("Indeterminate form")
+        # normal cases
         new_numerator = self.numerator * frac.numerator
         new_denominator = self.denominator * frac.denominator
         return Fraction(new_numerator, new_denominator)
@@ -68,3 +83,6 @@ class Fraction:
            is unique (3/6 is same as 1/2).
         """
         return self.numerator == frac.numerator and self.denominator == frac.denominator
+
+# print(Fraction(0) * Fraction(1, 0))
+# print(Fraction(1, 0) * Fraction(0))
