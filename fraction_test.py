@@ -26,10 +26,13 @@ class FractionTest(unittest.TestCase):
         # Constructor should provide default denominator = 1
         f = Fraction(99)
         self.assertEqual("99", f.__str__())
+        # infinity cases
         f = Fraction(1, 0)
         self.assertEqual("1/0", f.__str__())
         f = Fraction(-1, 0)
         self.assertEqual("-1/0", f.__str__())
+        f = Fraction(3, 0)
+        self.assertEqual("1/0", f.__str__())
 
     def test_add(self):
         """Test of __add__ (+)"""
@@ -40,12 +43,22 @@ class FractionTest(unittest.TestCase):
         self.assertEqual(Fraction(-1, 90), Fraction(23, -45) + Fraction(1, 2))
         self.assertEqual(Fraction(0, 1), Fraction(0) + Fraction(0))
         self.assertEqual(Fraction(7), Fraction(7) + Fraction(0))
+        # infinity cases
         self.assertEqual(Fraction(1, 0), Fraction(1, 0) + Fraction(5, 2))
         self.assertEqual(Fraction(-1, 0), Fraction(-1, 0) + Fraction(5, 2))
+        self.assertEqual(Fraction(1, 0), Fraction(1, 0) + Fraction(1, 0))
+        self.assertEqual(Fraction(-1, 0), Fraction(-1, 0) + Fraction(-1, 0))
+        # indeterminate forms
+        with self.assertRaises(ValueError):
+            Fraction(1, 0) + Fraction(-1, 0)
+            Fraction(-1, 0) + Fraction(1, 0)
 
     def test_init(self):
         """Test of __init__"""
         f = Fraction(1, 2)
+        self.assertEqual(1, f.numerator)
+        self.assertEqual(2, f.denominator)
+        f = Fraction(-1, -2)
         self.assertEqual(1, f.numerator)
         self.assertEqual(2, f.denominator)
         f = Fraction(-1, 2)
@@ -54,24 +67,39 @@ class FractionTest(unittest.TestCase):
         f = Fraction(1, -2)
         self.assertEqual(-1, f.numerator)
         self.assertEqual(2, f.denominator)
-        f = Fraction(-1, -2)
+        # numerator and denominator have common factor
+        f = Fraction(5, 10)
         self.assertEqual(1, f.numerator)
         self.assertEqual(2, f.denominator)
+        f = Fraction(10, 5)
+        self.assertEqual(2, f.numerator)
+        self.assertEqual(1, f.denominator)
+        # default denominator
+        f = Fraction(0)
+        self.assertEqual(0, f.numerator)
+        self.assertEqual(1, f.denominator)
         f = Fraction(50)
         self.assertEqual(50, f.numerator)
         self.assertEqual(1, f.denominator)
         f = Fraction(-50)
         self.assertEqual(-50, f.numerator)
         self.assertEqual(1, f.denominator)
-        f = Fraction(0)
-        self.assertEqual(0, f.numerator)
-        self.assertEqual(1, f.denominator)
+        # infinity case
         f = Fraction(1, 0)
         self.assertEqual(1, f.numerator)
         self.assertEqual(0, f.denominator)
         f = Fraction(-1, 0)
         self.assertEqual(-1, f.numerator)
         self.assertEqual(0, f.denominator)
+        f = Fraction(3, 0)
+        self.assertEqual(1, f.numerator)
+        self.assertEqual(0, f.denominator)
+        f = Fraction(-3, 0)
+        self.assertEqual(-1, f.numerator)
+        self.assertEqual(0, f.denominator)
+        # indeterminate form
+        with self.assertRaises(ValueError):
+            Fraction(0, 0)
 
     def test_mul(self):
         """Test of __mul__ (*)"""
@@ -82,9 +110,18 @@ class FractionTest(unittest.TestCase):
         self.assertEqual(Fraction(0), Fraction(0) * Fraction(-1, 2))
         self.assertEqual(Fraction(1, 2), Fraction(1) * Fraction(1, 2))
         self.assertEqual(Fraction(-1, 2), Fraction(1) * Fraction(-1, 2))
+        # infinity cases
         self.assertEqual(Fraction(1, 0), Fraction(1, 0) * Fraction(5, 7))
         self.assertEqual(Fraction(-1, 0), Fraction(-1, 0) * Fraction(5, 7))
-
+        self.assertEqual(Fraction(1, 0), Fraction(1, 0) * Fraction(1, 0))
+        self.assertEqual(Fraction(1, 0), Fraction(-1, 0) * Fraction(-1, 0))
+        self.assertEqual(Fraction(-1, 0), Fraction(-1, 0) * Fraction(1, 0))
+        self.assertEqual(Fraction(-1, 0), Fraction(1, 0).__mul__(Fraction(-1, 0)))
+        # indeterminate forms
+        with self.assertRaises(ValueError):
+            Fraction(0) * Fraction(1, 0)
+            Fraction(0) * Fraction(-1, 0)
+        
     def test_eq(self):
         """Test of __eq__ (==)"""
         f = Fraction(1, 2)
