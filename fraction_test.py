@@ -35,6 +35,9 @@ class FractionTest(unittest.TestCase):
         self.assertEqual("1/0", f.__str__())
         f = Fraction(-3, 0)
         self.assertEqual("-1/0", f.__str__())
+        # NaN
+        f = Fraction(0, 0)
+        self.assertEqual("0/0", f.__str__())
 
     def test_add(self):
         """Test of __add__ (+)"""
@@ -50,10 +53,13 @@ class FractionTest(unittest.TestCase):
         self.assertEqual(Fraction(-1, 0), Fraction(-1, 0) + Fraction(5, 2))
         self.assertEqual(Fraction(1, 0), Fraction(1, 0) + Fraction(1, 0))
         self.assertEqual(Fraction(-1, 0), Fraction(-1, 0) + Fraction(-1, 0))
-        # indeterminate forms
-        with self.assertRaises(ValueError):
-            Fraction(1, 0) + Fraction(-1, 0)
-            Fraction(-1, 0) + Fraction(1, 0)
+        # NaN
+        self.assertEqual(Fraction(0, 0), Fraction(1, 0) + Fraction(-1, 0))
+        self.assertEqual(Fraction(0, 0), Fraction(-1, 0) + Fraction(1, 0))
+        self.assertEqual(Fraction(0, 0), Fraction(0, 0) + Fraction(2, 5))
+        self.assertEqual(Fraction(0, 0), Fraction(0, 0) + Fraction(-2, 5))
+        self.assertEqual(Fraction(0, 0), Fraction(0, 0) + Fraction(1, 0))
+        self.assertEqual(Fraction(0, 0), Fraction(0, 0) + Fraction(-1, 0))
 
     def test_init(self):
         """Test of __init__"""
@@ -99,9 +105,17 @@ class FractionTest(unittest.TestCase):
         f = Fraction(-3, 0)
         self.assertEqual(-1, f.numerator)
         self.assertEqual(0, f.denominator)
-        # indeterminate form
+        # NaN
+        f = Fraction(0, 0)
+        self.assertEqual(0, f.numerator)
+        self.assertEqual(0, f.denominator)
+        # numerator or denominator is not int
         with self.assertRaises(ValueError):
-            Fraction(0, 0)
+            Fraction("2", 5)
+            Fraction(1.2, 5)
+            Fraction(2, "5")
+            Fraction(2, 5.2)
+            Fraction("2", "5")
 
     def test_mul(self):
         """Test of __mul__ (*)"""
@@ -119,10 +133,12 @@ class FractionTest(unittest.TestCase):
         self.assertEqual(Fraction(1, 0), Fraction(1, 0) * Fraction(1, 0))
         self.assertEqual(Fraction(1, 0), Fraction(-1, 0) * Fraction(-1, 0))
         self.assertEqual(Fraction(-1, 0), Fraction(-1, 0) * Fraction(1, 0))
-        # indeterminate forms
-        with self.assertRaises(ValueError):
-            Fraction(0) * Fraction(1, 0)
-            Fraction(0) * Fraction(-1, 0)
+        # NaN
+        self.assertEqual(Fraction(0, 0), Fraction(0) * Fraction(1, 0))
+        self.assertEqual(Fraction(0, 0), Fraction(0) * Fraction(-1, 0))
+        self.assertEqual(Fraction(0, 0), Fraction(0, 0) * Fraction(5, 2))
+        self.assertEqual(Fraction(0, 0), Fraction(0, 0) * Fraction(1, 0))
+        self.assertEqual(Fraction(0, 0), Fraction(0, 0) * Fraction(-1, 0))
 
     def test_eq(self):
         """Test of __eq__ (==)"""
@@ -157,3 +173,32 @@ class FractionTest(unittest.TestCase):
         g = Fraction(1, 0)
         self.assertTrue(f == g)
         self.assertTrue(f.__eq__(g))
+        f = Fraction(2, 5)
+        g = Fraction(0, 0)
+        self.assertFalse(f == g)
+        self.assertFalse(f.__eq__(g))
+        f = Fraction(-2, 5)
+        g = Fraction(0, 0)
+        self.assertFalse(f == g)
+        self.assertFalse(f.__eq__(g))
+        f = Fraction(1, 0)
+        g = Fraction(0, 0)
+        self.assertFalse(f == g)
+        self.assertFalse(f.__eq__(g))
+        f = Fraction(-1, 0)
+        g = Fraction(0, 0)
+        self.assertFalse(f == g)
+        self.assertFalse(f.__eq__(g))
+
+    def test_is_nan(self):
+        """Test of is_nan()"""
+        f = Fraction(0, 0)
+        self.assertTrue(f.is_nan())
+        f = Fraction(2, 5)
+        self.assertFalse(f.is_nan())
+        f = Fraction(-2, 5)
+        self.assertFalse(f.is_nan())
+        f = Fraction(1, 0)
+        self.assertFalse(f.is_nan())
+        f = Fraction(-1, 0)
+        self.assertFalse(f.is_nan())

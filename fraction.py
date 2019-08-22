@@ -15,29 +15,44 @@ class Fraction:
         """Initialize a new fraction with the given numerator
            and denominator (default 1).
         """
-        # infinity cases
+        # TODO: change 0/0 = math.nan
+        # check arguments type
+        if not isinstance(numerator, int) or not isinstance(denominator, int):
+            raise ValueError("Numerator and denominator should be integer.")
+        # set infinity case to standard form (1/0), (-1/0)
         if denominator == 0:
-            if numerator == 0:
-                raise ValueError("Indeterminate form")
-            elif numerator > 0:
+            if numerator > 0:
                 numerator = 1
-            else:
+            elif numerator < 0:
                 numerator = -1
-        # normal cases, move minus to numerator
+        # normal case, move minus to numerator
         elif denominator < 0:
             if numerator > 0:
                 numerator = - numerator
-            else:
+            elif numerator < 0:
                 numerator = abs(numerator)
             denominator = abs(denominator)
 
-        gcd = math.gcd(numerator, denominator)
-        self.numerator = int(numerator / gcd)
-        self.denominator = int(denominator / gcd)
+        # set numerator and denominator values
+        if numerator == 0 and denominator == 0:
+            self.numerator = 0
+            self.denominator = 0
+        else:
+            gcd = math.gcd(numerator, denominator)
+            self.numerator = int(numerator / gcd)
+            self.denominator = int(denominator / gcd)
+
+    def is_nan(self):
+        """Check if the fraction is NaN or not."""
+        if self.numerator == 0 and self.denominator == 0:
+            return True
+        return False
 
     def __str__(self):
         """Return fraction as a string."""
-        if self.denominator == 1 or self.numerator == 0:
+        if self.is_nan():
+            return "0/0"
+        elif self.numerator == 0 or self.denominator == 1:
             return str(self.numerator)
         return f"{self.numerator}/{self.denominator}"
 
@@ -47,20 +62,19 @@ class Fraction:
         """
         new_numerator = 1
         new_denominator = 1
+        # NaN + any fraction = NaN
+        if self.is_nan() or frac.is_nan():
+            return Fraction(0, 0)
         # infinity plus each other
-        if self.denominator == 0 and frac.denominator == 0:
-            if self.numerator > 0:
-                if frac.numerator > 0:
-                    new_numerator = 1
-                elif frac.numerator < 0:
-                    raise ValueError("Indeterminate form")
-            elif self.numerator < 0:
-                if frac.numerator > 0:
-                    raise ValueError("Indeterminate form")
-                elif frac.numerator < 0:
-                    new_numerator = -1
+        elif self.denominator == 0 and frac.denominator == 0:
+            if self.numerator + frac.numerator > 0:
+                new_numerator = 1
+            elif self.numerator + frac.numerator < 0:
+                new_numerator = -1
+            else:
+                new_numerator = 0
             new_denominator = 0
-        # normal cases and any number + (+/-) infinity case
+        # normal case and any number + (+/-)infinity
         else:
             new_numerator = (self.numerator * frac.denominator) + (self.denominator * frac.numerator)
             new_denominator = self.denominator * frac.denominator
@@ -68,10 +82,13 @@ class Fraction:
 
     def __mul__(self, frac):
         """Return the product of two fractions as a new fraction."""
-        # indeterminate form
-        if self.denominator == 0:
+        # NaN * any fraction = NaN
+        if self.is_nan() or frac.is_nan():
+            return Fraction(0, 0)
+        # 0 * (*/-)infinity = NaN
+        elif self.denominator == 0:
             if frac.numerator == 0:
-                raise ValueError("Indeterminate form")
+                return Fraction(0, 0)
         # normal cases
         new_numerator = self.numerator * frac.numerator
         new_denominator = self.denominator * frac.denominator
@@ -83,6 +100,3 @@ class Fraction:
            is unique (3/6 is same as 1/2).
         """
         return self.numerator == frac.numerator and self.denominator == frac.denominator
-
-# print(Fraction(0) * Fraction(1, 0))
-# print(Fraction(1, 0) * Fraction(0))
