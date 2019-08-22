@@ -15,7 +15,6 @@ class Fraction:
         """Initialize a new fraction with the given numerator
            and denominator (default 1).
         """
-        # TODO: change 0/0 = math.nan
         # check arguments type
         if not isinstance(numerator, int) or not isinstance(denominator, int):
             raise ValueError("Numerator and denominator should be integer.")
