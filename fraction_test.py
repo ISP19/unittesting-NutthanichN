@@ -165,6 +165,7 @@ class FractionTest(unittest.TestCase):
         g = Fraction(-3, -4)
         self.assertTrue(f == g)
         self.assertTrue(f.__eq__(g))
+        # infinity cases
         f = Fraction(1, 0)
         g = Fraction(-1, 0)
         self.assertFalse(f == g)
@@ -173,6 +174,7 @@ class FractionTest(unittest.TestCase):
         g = Fraction(1, 0)
         self.assertTrue(f == g)
         self.assertTrue(f.__eq__(g))
+        # NaN
         f = Fraction(2, 5)
         g = Fraction(0, 0)
         self.assertFalse(f == g)
