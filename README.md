@@ -104,6 +104,7 @@ Test of equality operator (==) method
 | fraction 0/0 (NaN) == positive or negative infinity | False |
 
 Test of `is_nan` method
+
 | Test case         |  Expected Result  |
 |-------------------|-------------------|
 | fraction 0/0 | True                   |
