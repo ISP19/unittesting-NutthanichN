@@ -1,5 +1,7 @@
 ## Unit Testing Assignment
 
+[![Build Status](https://travis-ci.com/NutthanichN/unittesting-NutthanichN.svg?branch=master)](https://travis-ci.com/NutthanichN/unittesting-NutthanichN)
+
 by Nutthanich Narphromar.
 
 
