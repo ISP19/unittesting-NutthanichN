@@ -14,7 +14,7 @@ class ListTest(unittest.TestCase):
         self.assertEqual([1, 2, 3], unique([1, 2, 3]))
         self.assertEqual(["a", 56, 25.8], unique(["a", 56, 25.8]))
         self.assertEqual([1], unique([1, 1, 1, 1, 1]))
-        self.assertEqual([1, 2], unique([1, 1, 2, 2, 5, 5, 1, 2]))
+        self.assertEqual([1, 2, 5], unique([1, 1, 2, 2, 5, 5, 1, 2]))
         self.assertEqual([{'car': 'Honda'}, {1, 2, 3}, [1], 1, 2, 'a', 'b'],
                          unique([{"car": "Honda"}, {"car": "Honda"}, {1, 2, 3}, [1],
                                  1, 1, 2, 2, "a", "a", "b", "a", 2]))
