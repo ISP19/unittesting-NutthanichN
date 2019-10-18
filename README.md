@@ -2,6 +2,9 @@
 
 [![Build Status](https://travis-ci.com/NutthanichN/unittesting-NutthanichN.svg?branch=master)](https://travis-ci.com/NutthanichN/unittesting-NutthanichN)
 
+[![codecov.io](https://codecov.io/github/NutthanichN/unittesting-NutthanichN/coverage.svg?branch=master)](https://codecov.io/github/Nutthanich/unittesting-NutthanichN?branch=master)
+
+
 by Nutthanich Narphromar.
 
 
