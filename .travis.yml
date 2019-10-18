@@ -7,9 +7,15 @@ git:
   depth: 1
 
 # Install dependencies
-#install:
+install:
+  - pip install codecov
 #  - pip install -r requirements.txt
 
 # script to run tests. Script can have many commands, one per line.
 script:
   - python -m unittest discover -p "*_test.py"
+  - coverage run fraction_test.py
+
+# push the results back to codecov
+after_success:
+  - codecov
