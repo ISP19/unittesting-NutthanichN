@@ -204,3 +204,7 @@ class FractionTest(unittest.TestCase):
         self.assertFalse(f.is_nan())
         f = Fraction(-1, 0)
         self.assertFalse(f.is_nan())
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)
